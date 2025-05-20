@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>War Vibe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #ff4500;
+            border-radius: 50%;
+            animation: explode 1s ease-out forwards;
+        }
+        @keyframes explode {
+            0% { transform: translate(0, 0); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-800 flex flex-col items-center justify-center relative overflow-hidden">
+    <h1 class="text-6xl font-bold text-red-600">War Vibe</h1>
+    <p class="text-xl mt-4 text-gray-300">Dark, intense, and explosive!</p>
+    <a href="index.html" class="mt-8 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Back to Main</a>
+    <script>
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.setProperty('--tx', `${Math.random() * 200 - 100}px`);
+            particle.style.setProperty('--ty', `${Math.random() * 200 - 100}px`);
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = `${Math.random() * 100}vh`;
+            document.body.appendChild(particle);
+            setTimeout(() => particle.remove(), 1000);
+        }
+        setInterval(createParticle, 200);
+    </script>
+</body>
+</html>
