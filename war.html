@@ -6,6 +6,14 @@
     <title>War Vibe</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @keyframes explode {
+            0% { transform: translate(0, 0); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)); opacity: 0; }
+        }
+        @keyframes impact {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
         .particle {
             position: absolute;
             width: 5px;
@@ -14,28 +22,46 @@
             border-radius: 50%;
             animation: explode 1s ease-out forwards;
         }
-        @keyframes explode {
-            0% { transform: translate(0, 0); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)); opacity: 0; }
+        .impact {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #ff4500 20%, transparent 70%);
+            border-radius: 50%;
+            animation: impact 0.5s ease-out forwards;
         }
+        .dark-mode { background: #111827; }
+        .light-mode { background: #f3f4f6; }
     </style>
 </head>
-<body class="min-h-screen bg-gray-800 flex flex-col items-center justify-center relative overflow-hidden">
-    <h1 class="text-6xl font-bold text-red-600">War Vibe</h1>
-    <p class="text-xl mt-4 text-gray-300">Dark, intense, and explosive!</p>
+<body class="min-h-screen bg-gray-800 flex flex-col items-center justify-center px-4 relative overflow-hidden transition-colors duration-300">
+    <h1 id="war-title" class="text-4xl sm:text-6xl font-bold text-red-600 text-center">War Vibe</h1>
+    <p id="war-desc" class="text-lg sm:text-xl mt-4 text-gray-300 text-center">Dark, intense, and explosive!</p>
     <a href="index.html" class="mt-8 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Back to Main</a>
+    <script src="assets/script.js"></script>
     <script>
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.setProperty('--tx', `${Math.random() * 200 - 100}px`);
-            particle.style.setProperty('--ty', `${Math.random() * 200 - 100}px`);
-            particle.style.left = `${Math.random() * 100}vw`;
-            particle.style.top = `${Math.random() * 100}vh`;
-            document.body.appendChild(particle);
-            setTimeout(() => particle.remove(), 1000);
-        }
-        setInterval(createParticle, 200);
+        document.addEventListener('click', (e) => {
+            const impact = document.createElement('div');
+            impact.className = 'impact';
+            impact.style.left = `${e.clientX}px`;
+            impact.style.top = `${e.clientY}px`;
+            document.body.appendChild(impact);
+            playSound('click');
+            setTimeout(() => impact.remove(), 500);
+            for (let i = 0; i < 5; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = `${e.clientX}px`;
+                particle.style.top = `${e.clientY}px`;
+                particle.style.setProperty('--tx', `${Math.random() * 100 - 50}px`);
+                particle.style.setProperty('--ty', `${Math.random() * 100 - 50}px`);
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 1000);
+            }
+        });
+        const content = JSON.parse(localStorage.getItem('pageContent') || '{}');
+        document.getElementById('war-title').textContent = content.war?.title || 'War Vibe';
+        document.getElementById('war-desc').textContent = content.war?.desc || 'Dark, intense, and explosive!';
     </script>
 </body>
 </html>
