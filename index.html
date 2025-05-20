@@ -11,12 +11,17 @@
             50% { text-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc, 0 0 40px #00ffcc; }
         }
         .neon-text { animation: neonGlow 1.5s ease-in-out infinite; }
+        .dark-mode { background: #111827; }
+        .light-mode { background: #f3f4f6; }
     </style>
 </head>
-<body class="bg-gray-900 text-white font-sans">
-    <div id="main-page" class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-900 to-blue-900 px-4">
+<body class="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white font-sans px-4 transition-colors duration-300">
+    <div id="main-page" class="w-full max-w-4xl">
+        <div class="flex justify-end mb-4">
+            <button id="theme-toggle" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">Toggle Theme</button>
+        </div>
         <h1 class="text-4xl sm:text-5xl font-bold neon-text mb-8 text-center">Thala Vibe Hub</h1>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <a href="super.html" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded-lg text-center transform hover:scale-105 transition-transform">Super Vibe</a>
             <a href="war.html" class="bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded-lg text-center transform hover:scale-105 transition-transform">War Vibe</a>
             <a href="gaming.html" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-lg text-center transform hover:scale-105 transition-transform">Gaming Vibe</a>
@@ -24,5 +29,9 @@
             <a href="admin.html" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-4 px-6 rounded-lg text-center transform hover:scale-105 transition-transform">Admin Panel</a>
         </div>
     </div>
+    <script src="assets/script.js"></script>
+    <script>
+        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+    </script>
 </body>
 </html>
