@@ -5,34 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gaming Vibe</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <style>
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
-        }
+        @keyframes glitch { 0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(2px, -2px); } 100% { transform: translate(0); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.2); opacity: 1; } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        .pulse { animation: pulse 2s ease-in-out infinite; }
+        .spin { animation: spin 3s linear infinite; }
+        .bounce { animation: bounce 1.5s ease-in-out infinite; }
         .glitch-text { animation: glitch 0.3s infinite; }
-        .target {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background: #ff0;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
+        .target { position: absolute; width: 40px; height: 40px; background: #ff0; border-radius: 50%; cursor: pointer; transition: transform 0.2s; }
         .target:hover { transform: scale(1.2); }
+        .dark-mode { background: #111827; }
+        .light-mode { background: #f3f4f6; }
+        .bg-overlay { background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)); }
     </style>
 </head>
-<body class="min-h-screen bg-black flex flex-col items-center justify-center relative">
-    <h1 class="text-6xl font-bold text-green-400 glitch-text">Gaming Vibe</h1>
-    <p class="text-xl mt-4 text-gray-400">Click the targets to score points!</p>
-    <p class="text-2xl mt-2 text-white" id="score">Score: 0</p>
-    <a href="index.html" class="mt-8 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Back to Main</a>
+<body class="min-h-screen bg-black flex flex-col items-center justify-center px-4 relative transition-colors duration-300">
+    <div id="bg-wrapper" class="absolute inset-0 bg-overlay"></div>
+    <h1 id="gaming-title" class="text-4xl sm:text-6xl font-bold text-green-400 glitch-text text-center relative z-10">Gaming Vibe</h1>
+    <p id="gaming-desc" class="text-lg sm:text-xl mt-4 text-gray-400 text-center relative z-10">Click the targets to score points!</p>
+    <p class="text-2xl mt-2 text-white relative z-10" id="score">Score: 0</p>
+    <a id="gaming-button" href="index.html" class="mt-8 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded relative z-10" aria-label="Back to main hub">Back to Main</a>
+    <script src="assets/script.js"></script>
     <script>
+        applyPageContent('gaming', document.getElementById('gaming-title'), document.getElementById('gaming-desc'), document.getElementById('bg-wrapper'), document.getElementById('gaming-button'));
         let score = 0;
         const scoreDisplay = document.getElementById('score');
         function createTarget() {
@@ -44,6 +42,7 @@
                 score++;
                 scoreDisplay.textContent = `Score: ${score}`;
                 target.remove();
+                playSound('beep');
                 createTarget();
             });
             document.body.appendChild(target);
