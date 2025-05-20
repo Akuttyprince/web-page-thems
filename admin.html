@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .pulse-effect { animation: pulse 2s ease-in-out infinite; }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-800 flex flex-col items-center justify-center px-4">
+    <h1 class="text-4xl sm:text-5xl font-bold text-white pulse-effect mb-8 text-center">Admin Panel</h1>
+    <div class="w-full max-w-md bg-gray-700 p-6 rounded-lg">
+        <h2 class="text-2xl font-bold mb-4">Edit Page Content</h2>
+        <form id="content-form" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium">Page</label>
+                <select id="page-select" class="w-full p-2 rounded bg-gray-600 text-white">
+                    <option value="super">Super Vibe</option>
+                    <option value="war">War Vibe</option>
+                    <option value="gaming">Gaming Vibe</option>
+                    <option value="lovely">Lovely Vibe</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Title</label>
+                <input id="page-title" type="text" class="w-full p-2 rounded bg-gray-600 text-white" placeholder="Enter page title">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Description</label>
+                <textarea id="page-desc" class="w-full p-2 rounded bg-gray-600 text-white" placeholder="Enter page description"></textarea>
+            </div>
+            <button type="submit" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded w-full">Save Changes</button>
+        </form>
+        <a href="index.html" class="mt-4 block text-center bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Back to Main</a>
+    </div>
+    <script>
+        const form = document.getElementById('content-form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const page = document.getElementById('page-select').value;
+            const title = document.getElementById('page-title').value;
+            const desc = document.getElementById('page-desc').value;
+            const content = JSON.parse(localStorage.getItem('pageContent') || '{}');
+            content[page] = { title, desc };
+            localStorage.setItem('pageContent', JSON.stringify(content));
+            alert('Content saved! Refresh the page to see changes.');
+            form.reset();
+        });
+    </script>
+</body>
+</html>
