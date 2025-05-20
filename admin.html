@@ -11,6 +11,7 @@
         .pulse-effect { animation: pulse 2s ease-in-out infinite; }
         .dark-mode { background: #111827; }
         .light-mode { background: #f3f4f6; }
+        #preview { background-size: cover; background-position: center; }
     </style>
 </head>
 <body class="min-h-screen bg-gray-800 flex flex-col items-center justify-center px-4 transition-colors duration-300">
@@ -51,13 +52,33 @@
                     <option value="bounce">Bounce</option>
                 </select>
             </div>
+            <div>
+                <label class="block text-sm font-medium">Particle Type</label>
+                <select id="page-particle" class="w-full p-2 rounded bg-gray-600 text-white">
+                    <option value="stars">Stars</option>
+                    <option value="explosions">Explosions</option>
+                    <option value="pixels">Pixels</option>
+                    <option value="hearts">Hearts</option>
+                </select>
+            </div>
+            <button type="button" id="preview-button" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full" aria-label="Preview changes">Preview</button>
             <button type="submit" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded w-full" aria-label="Save changes">Save Changes</button>
         </form>
+        <div id="preview" class="mt-4 p-4 rounded bg-gray-600 text-white" style="min-height: 100px;"></div>
         <a href="index.html" class="mt-4 block text-center bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" aria-label="Back to main hub">Back to Main</a>
+        <h2 class="text-2xl font-bold mt-8 mb-4">Create New Page</h2>
+        <form id="new-page-form" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium">Page ID (lowercase, no spaces)</label>
+                <input id="new-page-id" type="text" class="w-full p-2 rounded bg-gray-600 text-white" placeholder="e.g., custom_1">
+            </div>
+            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full" aria-label="Create new page">Create Page</button>
+        </form>
     </div>
     <script src="assets/script.js"></script>
     <script>
         const form = document.getElementById('content-form');
+        const preview = document.getElementById('preview');
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             const page = document.getElementById('page-select').value;
@@ -66,11 +87,37 @@
             const bgImage = document.getElementById('page-bg').value;
             const buttonColor = document.getElementById('page-button-color').value;
             const animation = document.getElementById('page-animation').value;
+            const particleType = document.getElementById('page-particle').value;
             const content = JSON.parse(localStorage.getItem('pageContent') || '{}');
-            content[page] = { title, desc, bgImage, buttonColor, animation };
+            content[page] = { title, desc, bgImage, buttonColor, animation, particleType };
             localStorage.setItem('pageContent', JSON.stringify(content));
             alert('Content saved! Refresh the page to see changes.');
             form.reset();
+            preview.innerHTML = '';
+        });
+        document.getElementById('preview-button').addEventListener('click', () => {
+            const title = document.getElementById('page-title').value || 'Preview Title';
+            const desc = document.getElementById('page-desc').value || 'Preview Description';
+            const bgImage = document.getElementById('page-bg').value;
+            const buttonColor = document.getElementById('page-button-color').value;
+            preview.innerHTML = `<h3 class="text-xl font-bold">${title}</h3><p class="mt-2">${desc}</p>`;
+            if (bgImage) preview.style.backgroundImage = `url(${bgImage})`;
+            preview.style.backgroundColor = buttonColor;
+            gsap.from(preview, { opacity: 0, y: 20, duration: 0.5, ease: 'power2.out' });
+        });
+        const newPageForm = document.getElementById('new-page-form');
+        newPageForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const pageId = document.getElementById('new-page-id').value.toLowerCase().replace(/\s/g, '_');
+            if (!pageId || pageId.match(/[^a-z0-9_]/)) {
+                alert('Invalid page ID! Use lowercase letters, numbers, or underscores.');
+                return;
+            }
+            const content = JSON.parse(localStorage.getItem('pageContent') || '{}');
+            content[pageId] = { title: `${pageId.charAt(0).toUpperCase() + pageId.slice(1)} Vibe`, desc: 'Your creation!', bgImage: '', buttonColor: '#9333ea', animation: 'bounce', particleType: 'stars' };
+            localStorage.setItem('pageContent', JSON.stringify(content));
+            alert(`Page "${pageId}" created! Add it to your project directory as "${pageId}.html" using the template.`);
+            newPageForm.reset();
         });
         gsap.from('.space-y-4', { y: 50, opacity: 0, duration: 1, ease: 'power2.out' });
     </script>
