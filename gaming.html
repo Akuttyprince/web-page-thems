@@ -15,11 +15,42 @@
             100% { transform: translate(0); }
         }
         .glitch-text { animation: glitch 0.3s infinite; }
+        .target {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #ff0;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .target:hover { transform: scale(1.2); }
     </style>
 </head>
-<body class="min-h-screen bg-black flex flex-col items-center justify-center">
+<body class="min-h-screen bg-black flex flex-col items-center justify-center relative">
     <h1 class="text-6xl font-bold text-green-400 glitch-text">Gaming Vibe</h1>
-    <p class="text-xl mt-4 text-gray-400">Retro arcade with a modern twist!</p>
+    <p class="text-xl mt-4 text-gray-400">Click the targets to score points!</p>
+    <p class="text-2xl mt-2 text-white" id="score">Score: 0</p>
     <a href="index.html" class="mt-8 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Back to Main</a>
+    <script>
+        let score = 0;
+        const scoreDisplay = document.getElementById('score');
+        function createTarget() {
+            const target = document.createElement('div');
+            target.className = 'target';
+            target.style.left = `${Math.random() * (window.innerWidth - 40)}px`;
+            target.style.top = `${Math.random() * (window.innerHeight - 40)}px`;
+            target.addEventListener('click', () => {
+                score++;
+                scoreDisplay.textContent = `Score: ${score}`;
+                target.remove();
+                createTarget();
+            });
+            document.body.appendChild(target);
+            setTimeout(() => target.remove(), 2000);
+        }
+        createTarget();
+        setInterval(createTarget, 1500);
+    </script>
 </body>
 </html>
