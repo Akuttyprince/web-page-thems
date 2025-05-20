@@ -6,47 +6,21 @@
     <title>Thala Vibe Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Neon Glow Animation */
         @keyframes neonGlow {
             0%, 100% { text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc, 0 0 30px #00ffcc; }
             50% { text-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc, 0 0 40px #00ffcc; }
         }
         .neon-text { animation: neonGlow 1.5s ease-in-out infinite; }
-
-        /* Particle Effect for War Page */
-        .particle {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background: #ff4500;
-            border-radius: 50%;
-            animation: explode 1s ease-out forwards;
-        }
-        @keyframes explode {
-            0% { transform: translate(0, 0); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)); opacity: 0; }
-        }
-
-        /* Glitch Effect for Gaming Page */
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
-        }
-        .glitch-text { animation: glitch 0.3s infinite; }
     </style>
 </head>
 <body class="bg-gray-900 text-white font-sans">
-    <!-- Main Hub Page -->
     <div id="main-page" class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-900 to-blue-900">
         <h1 class="text-5xl font-bold neon-text mb-8">Thala Vibe Hub</h1>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <a href="super.html" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded-lg text-center transform hover:scale-105 transition-transform">Super Vibe</a>
             <a href="war.html" class="bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded-lg text-center transform hover:scale-105 transition-transform">War Vibe</a>
             <a href="gaming.html" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-lg text-center transform hover:scale-105 transition-transform">Gaming Vibe</a>
+            <a href="lovely.html" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-4 px-6 rounded-lg text-center transform hover:scale-105 transition-transform">Lovely Vibe</a>
         </div>
     </div>
 </body>
